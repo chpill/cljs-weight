@@ -1,0 +1,3 @@
+{:require  [cljs-weight.empty]
+ :init-fns [cljs-weight.empty/init]
+ :compiler-options {:asset-path "js/app.out"}}

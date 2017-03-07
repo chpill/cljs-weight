@@ -1,0 +1,3 @@
+{:require  [cljs-weight.using-clojure-spec]
+ :init-fns [cljs-weight.using-clojure-spec/init]
+ :compiler-options {:asset-path "js/app.out"}}

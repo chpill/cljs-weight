@@ -1,0 +1,3 @@
+{:require  [cljs-weight.using-websockets]
+ :init-fns [cljs-weight.using-websockets/init]
+ :compiler-options {:asset-path "js/app.out"}}

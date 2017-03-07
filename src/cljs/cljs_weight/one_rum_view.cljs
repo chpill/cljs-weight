@@ -1,4 +1,4 @@
-(ns cljs-weight.app
+(ns cljs-weight.one-rum-view
     (:require [rum.core :as rum]))
 
 (rum/defc label [text]

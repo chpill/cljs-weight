@@ -2,48 +2,32 @@
  :source-paths    #{"src/cljs"}
  :resource-paths  #{"resources"}
  :dependencies '[[adzerk/boot-cljs          "1.7.228-2"  :scope "test"]
-                 [adzerk/boot-cljs-repl     "0.3.3"      :scope "test"]
-                 [adzerk/boot-reload        "0.4.13"      :scope "test"]
-                 [pandeiro/boot-http        "0.7.6"      :scope "test"]
-                 [com.cemerick/piggieback   "0.2.1"      :scope "test"]
-                 [org.clojure/tools.nrepl   "0.2.12"     :scope "test"]
-                 [weasel                    "0.7.0"      :scope "test"]
                  [org.clojure/clojurescript "1.9.293"]
-                 [rum "0.10.7"]])
 
-(require
- '[adzerk.boot-cljs      :refer [cljs]]
- '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
- '[adzerk.boot-reload    :refer [reload]]
- '[pandeiro.boot-http    :refer [serve]])
+                 [rum "0.10.7" :scope "test"]
 
-(deftask build []
+                 [org.clojure/core.async "0.2.395" :scope "test"]
+
+                 [bidi "2.0.16" :exclusions [org.clojure/clojurescript]]
+                 [kibu/pushy "0.3.6" :scope "test"]
+
+                 [com.taoensso/sente "1.11.0"]
+                 [com.cognitect/transit-cljs "0.8.239" :scope "test"]])
+
+(require '[adzerk.boot-cljs :refer [cljs]])
+
+(def cljs-options
+  {:optimizations :advanced
+   :compiler-options {:parallel-build true
+                      :compiler-stats true}})
+
+(deftask build
+  [o only ONLY str "only build this cljs build id"]
+  (let [cljs-options
+        (if only
+          (assoc cljs-options :ids #{only})
+          cljs-options)]
+    (task-options! cljs cljs-options))
   (comp (speak)
-        
         (cljs)
-        ))
-
-(deftask run []
-  (comp (serve)
-        (watch)
-        (cljs-repl)
-        
-        (reload)
-        (build)))
-
-(deftask production []
-  (task-options! cljs {:optimizations :advanced})
-  identity)
-
-(deftask development []
-  (task-options! cljs {:optimizations :none}
-                 reload {:on-jsload 'cljs-weight.app/init})
-  identity)
-
-(deftask dev
-  "Simple alias to run application in development mode"
-  []
-  (comp (development)
-        (run)))
-
-
+        (target))))
