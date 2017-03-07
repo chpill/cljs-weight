@@ -6,12 +6,13 @@ for the kind of js payloads we'll end up with in real projects.
 ## Why?
 
 Clojurescript compilation takes advantage of the Google Closure compiler to
-build its generated JS. This allows for dead code elimination.
+build its generated JS. This allows for dead code elimination. Nevertheless, the
+optimized payload seems to be important in non-trivial cases.
 
-Nevertheless, the optimized payload seems to be important in non-trivial cases.
-An extreme example of that is the front-end of [CircleCI]. The js file served to
-the browser weights 3.4M (1.02M gzipped). On the not so terrible internet
-connection of my parents it takes more than 3 seconds to download.
+An extreme example of that is the front-end of [CircleCI]. The project has 26317
+lines of cljs and 277 lines of clj (macros). The optimized js file served to the
+browser weights 3.4M (1.02M gzipped). On the not so terrible internet connection
+of my parents it takes more than 3 seconds to download.
 
 ![circleci production js request timing](resources/images/circleci-js-payload-firefox-devtools-network-view.png)
 
